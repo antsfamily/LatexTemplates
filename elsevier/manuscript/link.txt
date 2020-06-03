@@ -1,0 +1,4 @@
+download ``sample manuscript`` from https://www.elsevier.com/authors/author-schemas/latex-instructions
+
+The ``elsarticle.cls`` is contained in texlive, and it can be downloaded from http://mirrors.ctan.org/macros/latex/contrib/els-cas-templates.zip
+
