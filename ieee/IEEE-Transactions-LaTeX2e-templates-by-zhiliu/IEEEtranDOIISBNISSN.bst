@@ -3,7 +3,8 @@
 %% BibTeX Bibliography Style file for IEEE Journals and Conferences (unsorted)
 %% Version 1.14 (2015/08/26)
 %% 
-%% Copyright (c) 2003-2015 Michael Shell
+%% Copyright (c) 2003-2015 Michael Shell - IEEEtran.bst
+%% Copyright (c) 2023-     Zhi Liu - IEEEtranDOIISBNISSN.bst
 %% 
 %% Original starting code base and algorithms obtained from the output of
 %% Patrick W. Daly's makebst package as well as from prior versions of
@@ -270,7 +271,6 @@ ENTRY
     chapter
     day
     dayfiled
-    doi
     edition
     editor
     howpublished
@@ -295,6 +295,7 @@ ENTRY
     revision
     title
     type
+    doi
     url
     volume
     year
@@ -310,6 +311,7 @@ ENTRY
     CTLdash_repeated_names
     CTLname_format_string
     CTLname_latex_cmd
+    CTLname_doi_prefix
     CTLname_url_prefix
   }
   {}
@@ -1937,8 +1939,6 @@ FUNCTION {format.url}
       }
     if$
     }
-
-    
     { "" }
   if$
 }
@@ -1977,7 +1977,6 @@ FUNCTION {format.issn}
   if$
 }
 
-
 FUNCTION {format.doi}
 { is.use.doi
     { doi empty$
@@ -1985,7 +1984,6 @@ FUNCTION {format.doi}
       { this.to.prev.status
         this.status.std
         cap.yes 'status.cap :=
-        * *
         name.doi.prefix " " *
         "\href{https://doi.org/" * doi * "}{" * doi * "}." *
         punct.no 'this.status.punct :=
@@ -1996,12 +1994,9 @@ FUNCTION {format.doi}
       }
     if$
     }
-
-    
     { "" }
   if$
 }
-
 
 %%%%%%%%%%%%%%%%%%%%
 %% ENTRY HANDLERS %%
@@ -2023,6 +2018,7 @@ FUNCTION {article}
   format.number.if.use.for.article output
   format.pages output
   format.date "year" output.warn
+  format.issn output
   format.note output
   format.url output
   format.doi output
@@ -2274,7 +2270,6 @@ FUNCTION {phdthesis}
   format.phd.thesis.type output.nonnull
   format.school "school" bibinfo.warn output
   format.address "address" bibinfo.check output
-  format.isbn output
   format.date "year" output.warn
   format.note output
   format.url output
@@ -2461,7 +2456,13 @@ FUNCTION {IEEEtranBSTCTL}
       'name.url.prefix :=
     }
   if$
-
+  CTLname_doi_prefix
+  missing$
+    { skip$ }
+    { CTLname_doi_prefix
+      'name.doi.prefix :=
+    }
+  if$
 
   num.names.shown.with.forced.et.al max.num.names.before.forced.et.al >
     { "CTLnames_show_etal cannot be greater than CTLmax_names_forced_etal in " cite$ * warning$ 
